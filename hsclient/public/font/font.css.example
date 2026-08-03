@@ -1,0 +1,19 @@
+/* Vorlage fuer eine eigene Schriftart. So einbinden:
+   1. Diese Datei in diesem Ordner zu "font.css" kopieren (font.css ist in .gitignore ausgeschlossen,
+      landet also nie im Repo).
+   2. Eigene Schriftdatei (z. B. eine kommerziell lizenzierte) in diesen Ordner legen.
+   3. src-Pfad unten auf den echten Dateinamen anpassen.
+
+   Kein Rebuild-Konfigurationsschritt noetig: font.css wird zur Laufzeit optional nachgeladen
+   (siehe hsclient/src/main.tsx). Fehlt die Datei, greift einfach der Default aus index.css
+   ('Arial Narrow', sans-serif). */
+
+@font-face {
+  font-family: 'Meine Schrift';
+  src: url('./meine-schrift.ttf') format('truetype');
+  font-display: swap;
+}
+
+:root {
+  --font-family: 'Meine Schrift', 'Arial Narrow', sans-serif;
+}

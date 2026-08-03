@@ -1,0 +1,9 @@
+.env
+unknown-elements.json
+node_modules/
+dist/
+.firecrawl/
+deploy.ps1
+webserver-configs/
+hsclient/public/font/*
+!hsclient/public/font/font.css.example

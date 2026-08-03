@@ -1,0 +1,63 @@
+/* Schriftfamilie ist per Default eine auf den meisten Systemen vorhandene Systemschrift (kein
+   Download/Lizenz noetig). Wer eine eigene Schrift einbinden will: siehe
+   hsclient/public/font/font.css.example - die dort erzeugte font.css wird optional zur Laufzeit
+   nachgeladen (main.tsx) und ueberschreibt --font-family, ohne den Build zu beeinflussen. */
+:root {
+  --font-family: 'Arial Narrow', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #000;
+  color: #edb678;
+  font-family: var(--font-family);
+  overflow: hidden;
+}
+
+.stage-viewport {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+  background: #000;
+}
+
+.stage {
+  position: relative;
+  flex-shrink: 0;
+  transform-origin: center center;
+  overflow: hidden;
+}
+
+.visu-el {
+  position: absolute;
+  overflow: hidden;
+}
+
+.visu-clickable {
+  cursor: pointer;
+}
+
+.visu-clickable:hover {
+  filter: brightness(1.15);
+}
+
+.visu-clickable:active {
+  filter: brightness(0.85);
+}
+
+.visu-text {
+  user-select: none;
+}
