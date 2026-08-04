@@ -40,6 +40,9 @@ function App() {
   // Einzige Quelle der Wahrheit fuer "welche Seite ist gerade angefordert" - auch fuer Closures
   // (WebSocket-Handler), die nur einmal pro Session eingerichtet werden.
   const pageIdRef = useRef<string | null>(null);
+  // Ebenfalls fuer den WS-Handler: aktuellster Fehlerstand, ohne dass die Verbindung bei jeder
+  // pageError-Aenderung neu aufgebaut werden muss (siehe onOpen unten).
+  const pageErrorRef = useRef<string | null>(null);
   // Generation-Zaehler: jede Navigation/jeder Ladeauftrag erhoeht ihn. Eine Ladeantwort wird nur
   // noch uebernommen, wenn sie zur *aktuellsten* Generation gehoert - so kann eine spaet
   // eintreffende Antwort einer veralteten Anfrage nicht mehr die gerade angezeigte neue Seite
@@ -52,6 +55,10 @@ function App() {
   useEffect(() => {
     pageIdRef.current = pageId;
   }, [pageId]);
+
+  useEffect(() => {
+    pageErrorRef.current = pageError;
+  }, [pageError]);
 
   const loadCurrentPage = useCallback(async () => {
     const id = pageIdRef.current;
@@ -136,6 +143,10 @@ function App() {
         onOpen: () => {
           if (cancelled) return;
           setWsConnected(true);
+          // Der Server ist nachweislich wieder erreichbar - eine zuvor an einem toten Server
+          // gescheiterte Seite (z.B. "Failed to fetch") jetzt automatisch neu laden, statt fuer
+          // immer auf dem Fehlerbildschirm stehen zu bleiben.
+          if (pageErrorRef.current) void loadCurrentPage();
         },
         onClose: () => {
           if (cancelled || reconnectTimer) return; // bereits geplant/abgebaut
@@ -154,7 +165,7 @@ function App() {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       ws?.close();
     };
-  }, [session, applyWsUpdate]);
+  }, [session, applyWsUpdate, loadCurrentPage]);
 
   const handleNavigate = useCallback((id: string) => {
     setPageId(id);
