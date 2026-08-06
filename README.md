@@ -17,6 +17,12 @@ Der komplette Client liegt in **`hsclient/`** – eigenes `package.json`, unabh�
 
 ## Starten (Entwicklung)
 
+Voraussetzung: **Node.js 20.19+ oder 22.12+** (Vite 8 benötigt diese Version, ältere Node-Versionen
+brechen beim Start mit einem `node:util`-Importfehler ab). Aktuelle LTS-Version empfohlen, siehe
+https://nodejs.org. Auf Ubuntu liefert `apt install nodejs` oft eine veraltete Version – stattdessen
+[nvm](https://github.com/nvm-sh/nvm) verwenden (`nvm install 22 && nvm use 22`); `hsclient/.nvmrc`
+legt die empfohlene Version fest (`nvm use` im Ordner `hsclient/` reicht dann).
+
 ```bash
 cd hsclient
 npm install
