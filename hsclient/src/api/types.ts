@@ -13,6 +13,10 @@ export interface VisuElement {
   align?: number;
   src?: string;
   stream?: boolean;
+  // Nur bei stream:true gesetzt: Sekunden zwischen Neuabfragen des Kamerabilds (z.B. 0.2 = 5x/s),
+  // vom Homeserver selbst vorgegeben - es gibt keinen echten MJPEG-Stream, nur Einzelbilder ohne
+  // Cache-Header, die per Polling neu geladen werden muessen (siehe VECameraEl.tsx).
+  wait?: number;
   cmd?: string;
   show?: { type: number; id: string };
   raw?: string;
