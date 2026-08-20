@@ -129,7 +129,13 @@ export function VECameraEl({
     state.holdingLock = false;
     releaseTurn();
     if (state.stopped) return;
-    const delay = el.wait && el.wait > 0 ? el.wait * 1000 : 0;
+    // Homeserver schickt bei stream:false-Kameras "wait: 0" (nicht etwa "kein wait"): das ist
+    // keine Aufforderung, so schnell wie moeglich zu pollen, sondern schlicht "kein eigener
+    // Vorgabewert". Empirisch bestaetigt (Startseite V6, Kameras 174/247): ohne Mindestabstand
+    // feuert das Round-Robin fuer genau diese Kameras ungebremst mit 0ms Pause - >20 Requests/s,
+    // massiver CPU-Verbrauch auf schwacher Hardware, obwohl die Seite optisch ruhig wirkt.
+    const FALLBACK_DELAY_MS = 3000;
+    const delay = el.wait && el.wait > 0 ? el.wait * 1000 : FALLBACK_DELAY_MS;
     const myGeneration = generation;
     state.timer = window.setTimeout(() => {
       state.timer = undefined;
